@@ -1,0 +1,3 @@
+".\Objects\main.obj" 
+TO ".\Objects\interrupt_start" 
+PRINT(".\Listings\interrupt_start.m51") RAMSIZE(256) 

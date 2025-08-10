@@ -1,0 +1,98 @@
+C51 COMPILER V9.60.7.0   MAIN                                                              05/07/2025 19:32:23 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: D:\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\main.lst) TA
+                    -BS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          
+   3          void delay_ms(unsigned int ms)
+   4          {
+   5   1          unsigned int i, j;
+   6   1          for(i = 0; i < ms; i++)
+   7   1              for(j = 0; j < 1275; j++);
+   8   1      }
+   9          
+  10          void main()
+  11          {
+  12   1          P2_0 = 0;        // Turn off LED initially
+  13   1          TMOD = 0x05;     // Timer0 in Mode 1, counter mode (GATE=0, C/T=1)
+  14   1          TH0 = 0;         // Clear counter high byte
+  15   1          TL0 = 0;         // Clear counter low byte
+  16   1          TR0 = 1;         // Start Timer0 (counter mode)
+  17   1      
+  18   1          while(1)
+  19   1          {
+  20   2              unsigned int counterValue = (TH0 << 8) | TL0;
+  21   2      
+  22   2              if(counterValue >= 5)  // After 5 pulses
+  23   2              {
+  24   3                  P2_0 = 1;          // Turn on LED
+  25   3                  delay_ms(500);
+  26   3                  P2_0 = 0;
+  27   3                  delay_ms(500);
+  28   3                  TH0 = 0;           // Reset counter
+  29   3                  TL0 = 0;
+  30   3              }
+  31   2          }
+  32   1      }
+  33          
+  34          /*
+  35          #include <REGX52.H>
+  36          
+  37          void delay_ms(unsigned int ms)
+  38          {
+  39              unsigned int i, j;
+  40              for(i = 0; i < ms; i++)
+  41                  for(j = 0; j < 1275; j++);
+  42          }
+  43          
+  44          void main()
+  45          {
+  46              unsigned int count = 0;
+  47              P3_2 = 1;     // Make P3.2 input with internal pull-up
+  48              P2_0 = 0;     // Initially turn off LED
+  49          
+  50              while(1)
+  51              {
+  52                  if(P3_2 == 0)  // Button pressed
+  53                  {
+  54                      delay_ms(20);  // Debounce
+C51 COMPILER V9.60.7.0   MAIN                                                              05/07/2025 19:32:23 PAGE 2   
+
+  55                      if(P3_2 == 0)
+  56                      {
+  57                          count++;
+  58                          while(P3_2 == 0);  // Wait for release
+  59                      }
+  60                  }
+  61          
+  62                  if(count >= 5)
+  63                  {
+  64                      P2_0 = 1;  // Blink LED
+  65                      delay_ms(500);
+  66                      P2_0 = 0;
+  67                      delay_ms(500);
+  68                      count = 0;  // Reset count
+  69                  }
+  70              }
+  71          }
+  72          */
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     84    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       2
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
